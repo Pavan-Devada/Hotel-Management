@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Restaurant Bill</title>
+</head>
+<body class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="w-full max-w-lg bg-white p-6 rounded-lg shadow-md">
+        <!-- Header Section -->
+        <div class="flex items-center justify-between border-b pb-4">
+            <div class="w-16 h-16 bg-gray-200 flex items-center justify-center">LOGO</div>
+            <h2 class="text-lg font-bold text-center flex-1">Acme Restaurant</h2>
+            <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">👤</div>
+        </div>
+        
+        <!-- Date & Time -->
+        <div class="text-right text-sm text-gray-500 mt-2">21 Sept, 2022 - 21:10</div>
+        
+        <!-- Table -->
+        <div class="mt-4">
+            <table class="w-full text-sm border-collapse">
+                <thead>
+                    <tr class="border-b">
+                        <th class="text-left py-2 px-2">#</th>
+                        <th class="text-left py-2 px-2">Item</th>
+                        <th class="text-left py-2 px-2">Price</th>
+                        <th class="text-center py-2 px-2">Qty</th>
+                        <th class="text-right py-2 px-2">Total</th>
+                    </tr>
+                </thead>
+                <tbody id="billBody">
+                    <tr class="border-b">
+                        <td class="py-2 px-2">1</td>
+                        <td>
+                            <select class="border px-2 py-1 w-full rounded">
+                                <option>Select Item</option>
+                                <option value="90">Laccha Paratha - ₹90</option>
+                                <option value="180">Tandoori Chicken - ₹180</option>
+                            </select>
+                        </td>
+                        <td class="py-2 px-2">₹80</td>
+                        <td class="text-center flex items-center space-x-2">
+                            <button class="bg-gray-300 px-2 py-1 rounded" onclick="">-</button>
+                            <input type="number" value="1" min="1" class="w-12 text-center border mx-2" oninput="">
+                            <button class="bg-gray-300 px-2 py-1 rounded" onclick="">+</button>
+                        </td>
+                        <td class="text-right">₹0.00</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" class="text-center py-2">
+                            <button class="bg-blue-500 text-white px-3 py-1 rounded-full" onclick="addRow()">+</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Total Section -->
+        <div class="mt-4 text-sm">
+            <div class="flex justify-between">
+                <span>CGST:</span>
+                <span id="cgst">₹0.00</span>
+            </div>
+            <div class="flex justify-between">
+                <span>GST:</span>
+                <span id="gst">₹0.00</span>
+            </div>
+            <div class="flex justify-between border-t font-bold text-lg pt-2">
+                <span>Total:</span>
+                <span id="total">₹0.00</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function changeQty(button, delta) {
+            let input = button.parentElement.querySelector("input");
+            let newValue = Math.max(1, parseInt(input.value) + delta);
+            input.value = newValue;
+            updateTotal(input);
+        }
+
+        function updateTotal(input) {
+            let row = input.closest("tr");
+            let price = parseFloat(row.querySelector("select").value) || 0;
+            let quantity = parseInt(input.value) || 1;
+            row.cells[3].innerText = `₹${(price * quantity).toFixed(2)}`;
+            calculateTotal();
+        }
+
+        function addRow() {
+            let tbody = document.getElementById("billBody");
+            let newRow = document.createElement("tr");
+            newRow.innerHTML = `
+                <td class="py-2 px-2">#</td>
+                <td>
+                    <select class="border px-2 py-1 rounded w-full" onchange="updateTotal(this)">
+                        <option>Select Item</option>
+                        <option value="90">Laccha Paratha - ₹90</option>
+                        <option value="180">Tandoori Chicken - ₹180</option>
+                    </select>
+                </td>
+                <td class="py-2 px-2">₹80</td>
+                <td class="text-center flex items-center space-x-2">
+                    <button class="bg-gray-300 px-2 py-1 rounded" onclick="">-</button>
+                    <input type="number" value="1" min="1" class="w-12 text-center border mx-2" oninput="">
+                    <button class="bg-gray-300 px-2 py-1 rounded" onclick="">+</button>
+                </td>
+                <td class="text-right">₹0.00</td>
+            `;
+            tbody.insertBefore(newRow, tbody.lastElementChild);
+            updateRowNumbers();
+        }
+
+        function updateRowNumbers() {
+            let rows = document.querySelectorAll("#billBody tr");
+            rows.forEach((row, index) => {
+            if (index < rows.length - 1 && row.cells[0]) {
+                row.cells[0].innerText = index + 1;
+            }
+            });
+        }
+
+        function calculateTotal() {
+            let total = 0;
+            document.querySelectorAll("#billBody tr td:nth-child(4)").forEach(cell => {
+                total += parseFloat(cell.innerText.replace("₹", "")) || 0;
+            });
+            let cgst = total * 0.05;
+            let gst = total * 0.05;
+            document.getElementById("cgst").innerText = `₹${cgst.toFixed(2)}`;
+            document.getElementById("gst").innerText = `₹${gst.toFixed(2)}`;
+            document.getElementById("total").innerText = `₹${(total + cgst + gst).toFixed(2)}`;
+        }
+    </script>
+</body>
+</html>

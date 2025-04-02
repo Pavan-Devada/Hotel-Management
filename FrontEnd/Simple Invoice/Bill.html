@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Restaurant Invoice</title>
+</head>
+<body class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="w-[350px] bg-white p-6 rounded-lg shadow-md">
+        <div class="text-center border-b pb-4">
+            <div class="w-16 h-16 bg-gray-200 mx-auto mb-2 flex items-center justify-center">Your Logo</div>
+            <h2 class="text-lg font-bold">Acme Restaurant</h2>
+            <p class="text-xs text-gray-500">GST - 123456WERTYU</p>
+            <p class="text-xs text-gray-500">FSSAI - ABC123ARPIT</p>
+        </div>
+        <div class="mt-4 text-sm">
+            <div class="flex justify-between font-semibold">
+                <span>Token no. 7</span>
+                <span>21 Sept, 2022 21:10</span>
+            </div>
+        </div>
+        <div class="mt-4">
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="border-b">
+                        <th class="text-left py-2">Item</th>
+                        <th class="text-center">Qty</th>
+                        <th class="text-right">Price</th>
+                        <th class="text-right">Amt</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-b">
+                        <td class="py-2">Laccha Paratha</td>
+                        <td class="text-center">1</td>
+                        <td class="text-right">₹90</td>
+                        <td class="text-right">₹90.00</td>
+                    </tr>
+                    <tr class="border-b">
+                        <td class="py-2">Tandoori Chicken</td>
+                        <td class="text-center">1</td>
+                        <td class="text-right">₹180</td>
+                        <td class="text-right">₹180.00</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="mt-4 text-sm">
+            <div class="flex justify-between border-t pt-2">
+                <span>Sub-total:</span>
+                <span>₹270.00</span>
+            </div>
+            <div class="flex justify-between text-green-600">
+                <span>Discount:</span>
+                <span>- ₹30.00</span>
+            </div>
+            <div class="flex justify-between border-t font-bold text-lg pt-2">
+                <span>Grand Total:</span>
+                <span>₹240.00</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
